@@ -1,5 +1,7 @@
 'use strict'
 
+const subDays = require('date-fns/subDays')
+const isAfter = require('date-fns/isAfter')
 const crypto = require('crypto')
 const User = use('App/Models/User')
 const Mail = use('Mail')
@@ -8,8 +10,6 @@ class ForgotPasswordController {
   async store ({ request, response }) {
     try {
       const email = request.input('email')
-
-      console.log(request.input)
 
       const user = await User.findByOrFail('email', email)
 
@@ -29,7 +29,29 @@ class ForgotPasswordController {
         }
       )
     } catch (error) {
-      return response.status(error.status).send({ error: { message: error.message } })
+      return response.status(error.status).send({ error: { message: 'Confirm your e-mail.' } })
+    }
+  }
+
+  async update ({ request, response }) {
+    try {
+      const { token, password } = request.all()
+
+      const user = await User.findByOrFail('token', token)
+
+      const tokenExpired = isAfter(subDays(new Date(), 1), user.token_created_at)
+
+      if (tokenExpired) {
+        return response.status(401).send({ error: { message: 'Token invalid or expired' } })
+      }
+
+      user.token = null
+      user.token_created_at = null
+      user.password = password
+
+      await user.save()
+    } catch (error) {
+      return response.status(error.status).send({ error: { message: 'Token invalid or expired' } })
     }
   }
 }

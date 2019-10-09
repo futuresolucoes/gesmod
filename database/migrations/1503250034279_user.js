@@ -12,7 +12,7 @@ class UserSchema extends Schema {
       table.string('password', 60).notNullable()
       table.boolean('is_active').defaultTo(0)
       table.string('token')
-      table.timestamp('token_created_at')
+      table.datetime('token_created_at')
       table.timestamps()
     })
   }
