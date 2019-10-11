@@ -1,8 +1,7 @@
 'use strict'
 
 const crypto = require('crypto')
-const subDays = require('date-fns/subDays')
-const isAfter = require('date-fns/isAfter')
+const { subDays, isAfter } = require('date-fns')
 
 const ConfirmNewUser = use('App/Services/ConfirmNewUserService')
 const User = use('App/Models/User')
@@ -23,7 +22,7 @@ class NewUserConfirmController {
 
       await user.save()
 
-      await ConfirmNewUser.run({ name: user.name, email: user.email, token: user.token, link: 'https://teste' })
+      await ConfirmNewUser.run({ name: user.name, email: user.email, token: user.token })
     } catch (error) {
       return response.status(400).send({ error: { message: 'Email not found' } })
     }

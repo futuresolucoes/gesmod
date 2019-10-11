@@ -13,6 +13,7 @@ const Server = use('Server')
 |
 */
 const globalMiddleware = [
+  'App/Middleware/AcceptRequestHeaderApplicationJson',
   'Adonis/Middleware/BodyParser',
   'App/Middleware/ConvertEmptyStringsToNull'
 ]

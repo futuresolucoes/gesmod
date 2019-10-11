@@ -21,11 +21,11 @@ class UserController {
 
       const newUser = await User.create(data)
 
-      await ConfirmNewUser.run({ name: data.name, email: data.email, token: data.token, link: 'https://teste' })
+      await ConfirmNewUser.run({ name: data.name, email: data.email, token: data.token })
 
       return newUser
     } catch (error) {
-      return response.status(400).send({ error: { message: 'Confirm your data' } })
+      return response.status(400).send({ error: { message: error.message } })
     }
   }
 }
