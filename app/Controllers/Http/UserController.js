@@ -8,13 +8,7 @@ const User = use('App/Models/User')
 class UserController {
   async store ({ request, response }) {
     try {
-      const data = request.only(['name', 'fantasy_name', 'email', 'password'])
-
-      const user = await User.findBy('email', data.email)
-
-      if (user) {
-        return response.status(400).send({ error: { message: 'E-mail already registered' } })
-      }
+      const data = request.only(['name', 'email', 'password'])
 
       data.token = crypto.randomBytes(10).toString('hex')
       data.token_created_at = new Date()
@@ -25,7 +19,7 @@ class UserController {
 
       return newUser
     } catch (error) {
-      return response.status(400).send({ error: { message: error.message } })
+      return response.status(error.status).send({ error: { message: error.message } })
     }
   }
 }
