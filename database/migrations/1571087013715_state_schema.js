@@ -1,0 +1,21 @@
+'use strict'
+
+/** @type {import('@adonisjs/lucid/src/Schema')} */
+const Schema = use('Schema')
+
+class StateSchema extends Schema {
+  up () {
+    this.create('states', (table) => {
+      table.integer('id', 10).notNullable().unique()
+      table.string('name', 255).notNullable()
+      table.string('initials', 255).notNullable()
+      table.timestamps()
+    })
+  }
+
+  down () {
+    this.drop('states')
+  }
+}
+
+module.exports = StateSchema
