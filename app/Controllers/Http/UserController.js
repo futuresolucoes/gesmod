@@ -22,6 +22,28 @@ class UserController {
       return response.status(error.status).send({ error: { message: error.message } })
     }
   }
+
+  async update ({ request, response, auth }) {
+    try {
+      const data = request.only(['id', 'name', 'email', 'password', 'is_active'])
+
+      const user = await User.findByOrFail('id', data.id)
+
+      const { id: authUserId } = await auth.getUser()
+
+      if (user.id !== authUserId) {
+        return response.status(401).send({ error: { message: 'You do not have permission to change this user' } })
+      }
+
+      user.merge(data)
+
+      await user.save()
+
+      return user
+    } catch (error) {
+      return response.status(400).send({ error: { message: 'Confirm your data' } })
+    }
+  }
 }
 
 module.exports = UserController

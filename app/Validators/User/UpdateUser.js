@@ -1,15 +1,16 @@
 'use strict'
 
-class StoreUser {
+class UserUpdateUser {
   get validateAll () {
     return true
   }
 
   get rules () {
     return {
-      name: 'required|string',
-      email: 'required|email|unique:users,email',
-      password: 'required|confirmed|min:8'
+      id: 'required|integer',
+      name: 'string',
+      email: 'email|unique:users,email',
+      password: 'confirmed|min:8'
     }
   }
 
@@ -26,4 +27,4 @@ class StoreUser {
   }
 }
 
-module.exports = StoreUser
+module.exports = UserUpdateUser

@@ -14,6 +14,10 @@ class User extends Model {
     })
   }
 
+  static get hidden () {
+    return ['password', 'token', 'token_created_at']
+  }
+
   tokens () {
     return this.hasMany('App/Models/Token')
   }
