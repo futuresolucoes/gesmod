@@ -6,7 +6,7 @@ const Schema = use('Schema')
 class StateSchema extends Schema {
   up () {
     this.create('states', (table) => {
-      table.integer('id', 10).notNullable().unique()
+      table.increments()
       table.string('name', 255).notNullable()
       table.string('initials', 255).notNullable()
       table.timestamps()

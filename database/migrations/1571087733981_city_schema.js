@@ -6,7 +6,7 @@ const Schema = use('Schema')
 class CitySchema extends Schema {
   up () {
     this.create('cities', (table) => {
-      table.integer('id', 10).notNullable().unique()
+      table.increments()
       table.string('name', 255).notNullable()
       table.integer('state_id').unsigned().references('id').inTable('states')
       table.timestamps()
