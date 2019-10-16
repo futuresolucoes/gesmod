@@ -3,7 +3,7 @@
 const crypto = require('crypto')
 const { subDays, isAfter } = require('date-fns')
 
-const ConfirmNewUser = use('App/Services/ConfirmNewUserService')
+const Event = use('Event')
 const User = use('App/Models/User')
 
 class NewUserConfirmController {
@@ -22,7 +22,7 @@ class NewUserConfirmController {
 
       await user.save()
 
-      await ConfirmNewUser.run({ name: user.name, email: user.email, token: user.token })
+      Event.fire('user', user)
     } catch (error) {
       return response.status(400).send({ error: { message: 'Email not found' } })
     }

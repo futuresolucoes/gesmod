@@ -2,7 +2,7 @@
 
 const crypto = require('crypto')
 
-const ConfirmNewUser = use('App/Services/ConfirmNewUserService')
+const Event = use('Event')
 const User = use('App/Models/User')
 
 class UserController {
@@ -15,7 +15,7 @@ class UserController {
 
       const newUser = await User.create(data)
 
-      await ConfirmNewUser.run({ name: data.name, email: data.email, token: data.token })
+      Event.fire('user', newUser)
 
       return newUser
     } catch (error) {
