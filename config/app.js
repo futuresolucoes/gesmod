@@ -41,7 +41,7 @@ module.exports = {
     | below value to true.
     |
     */
-    allowMethodSpoofing: true,
+    allowMethodSpoofing: false,
 
     /*
     |--------------------------------------------------------------------------
@@ -81,7 +81,6 @@ module.exports = {
     |
     */
     jsonpCallback: 'callback',
-
 
     /*
     |--------------------------------------------------------------------------
