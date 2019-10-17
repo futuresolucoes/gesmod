@@ -7,13 +7,9 @@ const Env = use('Env')
 const Mail = use('Mail')
 
 User.confirmMail = async ({ name, email, token }) => {
-  const url = Env.get('APP_URL')
-
-  console.log('here')
-
   await Mail.send(
     ['mails.confirm_new_user', 'mails.confirm_new_user-text'],
-    { name, email, token, link: `${url}?token=${token}`, color_letter: '#0909dd' },
+    { name, email, token, link: `${Env.get('URL_FRONT')}confirm?token=${token}` },
     message => {
       message
         .to(email)

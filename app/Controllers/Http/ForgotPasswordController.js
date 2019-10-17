@@ -1,10 +1,12 @@
 'use strict'
 
+/** @type {import('@adonisjs/framework/src/Env')} */
 const subDays = require('date-fns/subDays')
 const isAfter = require('date-fns/isAfter')
 const crypto = require('crypto')
 const User = use('App/Models/User')
 const Mail = use('Mail')
+const Env = use('Env')
 
 class ForgotPasswordController {
   async store ({ request, response }) {
@@ -18,9 +20,11 @@ class ForgotPasswordController {
 
       await user.save()
 
+      const url = Env.get('URL_FRONT')
+
       await Mail.send(
         ['mails.forgot_password', 'mails.forgot_password-text'],
-        { email, token: user.token, link: `${request.input('redirect_url')}?token=${user.token}` },
+        { name: user.name, token: user.token, link: url, link_with_token: `${url}forgotpassword?token=${user.token}` },
         message => {
           message
             .to(user.email)
