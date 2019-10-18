@@ -10,3 +10,5 @@ Route.post('sendmailconfirmregister', 'NewUserConfirmController.store')
 Route.put('confirmregister', 'NewUserConfirmController.update')
 
 Route.put('users', 'UserController.update').middleware(['auth']).validator('User/UpdateUser')
+
+Route.get('person', 'PersonController.show')

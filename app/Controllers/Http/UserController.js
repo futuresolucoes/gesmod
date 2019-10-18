@@ -8,7 +8,7 @@ const User = use('App/Models/User')
 class UserController {
   async store ({ request, response }) {
     try {
-      const data = request.only(['name', 'email', 'password'])
+      const data = request.only(['name', 'login', 'password'])
 
       data.token = crypto.randomBytes(10).toString('hex')
       data.token_created_at = new Date()
@@ -25,7 +25,7 @@ class UserController {
 
   async update ({ request, response, auth }) {
     try {
-      const data = request.only(['id', 'name', 'email', 'password', 'is_active'])
+      const data = request.only(['id', 'name', 'login', 'password', 'is_active'])
 
       const user = await User.findByOrFail('id', data.id)
 

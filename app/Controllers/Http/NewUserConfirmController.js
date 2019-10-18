@@ -9,9 +9,9 @@ const User = use('App/Models/User')
 class NewUserConfirmController {
   async store ({ request, response }) {
     try {
-      const { email } = request.all()
+      const { login } = request.all()
 
-      const user = await User.findByOrFail('email', email)
+      const user = await User.findByOrFail('login', login)
 
       if (user.is_active) {
         return response.status(400).send({ error: { message: 'User is already active' } })
@@ -24,7 +24,7 @@ class NewUserConfirmController {
 
       Event.fire('user', user)
     } catch (error) {
-      return response.status(400).send({ error: { message: 'Email not found' } })
+      return response.status(400).send({ error: { message: 'Login not found' } })
     }
   }
 

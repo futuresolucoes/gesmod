@@ -11,9 +11,9 @@ const Env = use('Env')
 class ForgotPasswordController {
   async store ({ request, response }) {
     try {
-      const email = request.input('email')
+      const login = request.input('login')
 
-      const user = await User.findByOrFail('email', email)
+      const user = await User.findByOrFail('login', login)
 
       user.token = crypto.randomBytes(10).toString('hex')
       user.token_created_at = new Date()
@@ -27,7 +27,7 @@ class ForgotPasswordController {
         { name: user.name, token: user.token, link: url, link_with_token: `${url}forgotpassword?token=${user.token}` },
         message => {
           message
-            .to(user.email)
+            .to(user.login)
             .from('noreply@futuresolucoes.com.br', 'Equipe Future Soluções')
             .subject('Recovery password')
         }

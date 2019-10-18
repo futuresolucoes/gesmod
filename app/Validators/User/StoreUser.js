@@ -8,7 +8,7 @@ class StoreUser {
   get rules () {
     return {
       name: 'required|string',
-      email: 'required|email|unique:users,email',
+      login: 'required|email|unique:users,login',
       password: 'required|confirmed|min:8'
     }
   }
@@ -21,7 +21,7 @@ class StoreUser {
 
   get sanitizationRules () {
     return {
-      email: 'normalize_email'
+      login: 'normalize_email'
     }
   }
 }

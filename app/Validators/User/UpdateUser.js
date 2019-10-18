@@ -9,7 +9,7 @@ class UserUpdateUser {
     return {
       id: 'required|integer',
       name: 'string',
-      email: 'email|unique:users,email',
+      login: 'email|unique:users,login',
       password: 'confirmed|min:8'
     }
   }
@@ -22,7 +22,7 @@ class UserUpdateUser {
 
   get sanitizationRules () {
     return {
-      email: 'normalize_email'
+      login: 'normalize_email'
     }
   }
 }
