@@ -12,7 +12,7 @@ class PersonSchema extends Schema {
       table.string('email', 256).notNullable()
       table.date('birthday').notNullable()
       table.string('phone').notNullable()
-      table.string('phone_2')
+      table.string('phone_secondary')
       table.integer('user_id')
         .unsigned()
         .references('id')

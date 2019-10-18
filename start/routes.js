@@ -12,3 +12,6 @@ Route.put('confirmregister', 'NewUserConfirmController.update')
 Route.put('users', 'UserController.update').middleware(['auth']).validator('User/UpdateUser')
 
 Route.get('person', 'PersonController.show')
+Route.post('person', 'PersonController.store')
+
+Route.get('companypersonresponsable', 'CompanyPersonResponsableController.index')

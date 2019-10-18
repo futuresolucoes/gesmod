@@ -7,13 +7,17 @@ const Person = use('App/Models/Person')
 
 class PersonController {
   async index ({ request, response }) {
+
   }
 
   async store ({ request, response }) {
+    const all = request.all()
+
+    return all
   }
 
   async show ({ params, request, response }) {
-    const person = await Person.query().with('addresses').first()
+    const person = await Person.query().with('isResponsable').first()
 
     return person
   }

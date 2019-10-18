@@ -11,6 +11,11 @@ class Company extends Model {
   addresses () {
     return this.hasMany('App/Models/Address')
   }
+
+  responsibleFor () {
+    return this.belongsToMany('App/Models/Person')
+      .pivotTable('company_person_responsables')
+  }
 }
 
 module.exports = Company
