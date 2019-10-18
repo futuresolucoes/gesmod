@@ -20,55 +20,46 @@ class PersonSeeder {
     const data = [
       {
         id: 1,
-        name: 'Future Soluções',
-        fantasy_name: 'Future',
-        email: 'future@future.com.br',
-        email_secondary: null,
-        cnpj: '15555666000115',
-        ie: null,
-        im: null,
-        phone: '54982656651',
-        phone_secondary: null,
+        name: 'Weliton Sernajotto',
+        cpf: '01877811092',
+        email: 'suporte@futuresolucoes.com.br',
+        birthday: '1989-04-15',
+        phone: '54992683663',
+        phone_secondary: '5430455261',
         user_id: null,
-        company_type_id: 1,
+        person_type_id: 1,
         created_at: now,
         updated_at: now
       },
       {
         id: 2,
-        name: 'Fonte Sarandi',
-        fantasy_name: 'Sarandi',
-        email: 'sarandi@hotmail.com',
-        email_secondary: null,
-        cnpj: '97318943000107',
-        ie: null,
-        im: null,
-        phone: '54955112244',
-        phone_secondary: null,
+        name: 'Cassiane Portella',
+        cpf: '01577811193',
+        email: 'cassi@gmail.com',
+        birthday: '1987-11-18',
+        phone: '54981552211',
+        phone_secondary: '5433556655',
         user_id: null,
-        company_type_id: 1,
+        person_type_id: 1,
         created_at: now,
         updated_at: now
       },
       {
         id: 3,
-        name: 'Safeweb',
-        fantasy_name: 'Safe',
-        email: 'safeweb@gmail.com',
-        email_secondary: null,
-        cnpj: '91315554000102',
-        ie: null,
-        im: null,
-        phone: '54940072410',
-        phone_secondary: null,
+        name: 'Barbara Sernajotto',
+        cpf: '02233565982',
+        email: 'babalu@future.com',
+        birthday: '2008-09-30',
+        phone: '54988884444',
+        phone_secondary: '5433556688',
         user_id: null,
-        company_type_id: 1,
+        person_type_id: 1,
         created_at: now,
         updated_at: now
       }
     ]
 
-    await Database.table('companies').insert(data)
+    await Database.table('people').insert(data)
   }
 }
 
