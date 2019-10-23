@@ -11,12 +11,7 @@ class UserController {
     try {
       const data = request.only(['company_id', 'person_id', 'name', 'login', 'password'])
 
-      return StoreUserService.run({
-        companyId: data.company_id,
-        personId: data.person_id,
-        name: data.name,
-        ...data
-      })
+      return StoreUserService.run(data)
     } catch (error) {
       return response.status(error.status).send({ error: { message: error } })
     }

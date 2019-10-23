@@ -6,10 +6,10 @@ const { subDays, isAfter } = require('date-fns')
 const Event = use('Event')
 const User = use('App/Models/User')
 
-class NewUserConfirmController {
+class ConfirmEmailController {
   async store ({ request, response }) {
     try {
-      const { login } = request.all()
+      const { name, login } = request.all()
 
       const user = await User.findByOrFail('login', login)
 
@@ -22,7 +22,11 @@ class NewUserConfirmController {
 
       await user.save()
 
-      Event.fire('user', user)
+      user.name = name
+
+      await Event.fire('user:confirmMail', user)
+
+      return response.status(200).send({ Success: { message: 'E-mail sent' } })
     } catch (error) {
       return response.status(400).send({ error: { message: 'Login not found' } })
     }
@@ -55,4 +59,4 @@ class NewUserConfirmController {
   }
 }
 
-module.exports = NewUserConfirmController
+module.exports = ConfirmEmailController

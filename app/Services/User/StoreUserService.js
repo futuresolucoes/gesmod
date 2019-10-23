@@ -1,13 +1,14 @@
 const crypto = require('crypto')
 const Database = use('Database')
 const CustomException = use('App/Exceptions/CustomException')
+const Event = use('Event')
 
 const Company = use('App/Models/Company')
 const Person = use('App/Models/Person')
 const User = use('App/Models/User')
 
 class StoreUserService {
-  async run ({ companyId, personId, name, ...user }) {
+  async run ({ company_id: companyId, person_id: personId, name, ...user }) {
     const trx = await Database.beginTransaction()
 
     if (companyId && personId) {
@@ -18,10 +19,7 @@ class StoreUserService {
       throw new CustomException({ message: "When passed person_id or company_id, name shouldn't passed", validation: 'Only name, only person_id or only company_id' }, 400)
     }
 
-    user.token = crypto.randomBytes(10).toString('hex')
-    user.token_created_at = new Date()
-
-    const newUser = await User.create({ login: user.login, password: user.password }, trx)
+    const newUser = await User.create(user, trx)
 
     if (personId) {
       const person = await Person.findOrFail(personId)
@@ -45,10 +43,16 @@ class StoreUserService {
 
     if (!personId && !companyId) {
       newUser.is_active = 0
+      newUser.token = crypto.randomBytes(10).toString('hex')
+      newUser.token_created_at = new Date()
 
       await newUser.save(trx)
 
       await trx.commit()
+
+      newUser.name = name
+
+      await Event.fire('user:confirmMail', newUser)
 
       return newUser
     }

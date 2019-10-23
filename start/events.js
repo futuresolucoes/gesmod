@@ -1,3 +1,3 @@
 const Event = use('Event')
 
-Event.on('user', 'User.confirmMail')
+Event.on('user:confirmMail', 'User.confirmMail')

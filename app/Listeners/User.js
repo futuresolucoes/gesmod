@@ -6,13 +6,24 @@ const User = exports = module.exports = {}
 const Env = use('Env')
 const Mail = use('Mail')
 
-User.confirmMail = async ({ name, email, token }) => {
+User.confirmMail = async ({ name, login, token }) => {
+  console.log(`
+
+    HERE
+
+
+    ${name}
+    ${login}
+    ${token}
+
+
+  `)
   await Mail.send(
     ['mails.confirm_new_user', 'mails.confirm_new_user-text'],
-    { name, email, token, link: `${Env.get('URL_FRONT')}confirm?token=${token}` },
+    { name, login, token, link: `${Env.get('URL_FRONT')}confirm?token=${token}` },
     message => {
       message
-        .to(email)
+        .to(login)
         .from('noreply@futuresolucoes.com.br', 'Equipe Future Soluções')
         .subject('Confirm your registration')
     }
