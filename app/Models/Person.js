@@ -12,6 +12,10 @@ class Person extends Model {
     return this.hasMany('App/Models/Address')
   }
 
+  user () {
+    return this.belongsTo('App/Models/User')
+  }
+
   isResponsable () {
     return this.belongsToMany('App/Models/Company')
       .pivotTable('company_person_responsables')

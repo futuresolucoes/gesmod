@@ -1,31 +1,35 @@
 'use strict'
+/** @typedef {import('@adonisjs/framework/src/Request')} Request */
+/** @typedef {import('@adonisjs/framework/src/Response')} Response */
+/** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const crypto = require('crypto')
-
-const Event = use('Event')
 const User = use('App/Models/User')
+
+const StoreUserService = require('../../Services/User/StoreUserService')
 
 class UserController {
   async store ({ request, response }) {
     try {
-      const data = request.only(['name', 'login', 'password'])
+      const data = request.only(['company_id', 'person_id', 'login', 'password'])
 
-      data.token = crypto.randomBytes(10).toString('hex')
-      data.token_created_at = new Date()
+      if (data.company_id && data.person_id) {
+        return response.status('401')
+          .send({ error: { message: "Shouldn't be passed together person_id and company_id" } })
+      }
 
-      const newUser = await User.create(data)
-
-      Event.fire('user', newUser)
-
-      return newUser
+      return StoreUserService.run({
+        companyId: data.company_id,
+        personId: data.person_id,
+        ...data
+      })
     } catch (error) {
-      return response.status(error.status).send({ error: { message: error.message } })
+      return response.status(error.status).send({ error: { message: error } })
     }
   }
 
   async update ({ request, response, auth }) {
     try {
-      const data = request.only(['id', 'name', 'login', 'password', 'is_active'])
+      const data = request.only(['id', 'login', 'password', 'is_active'])
 
       const user = await User.findByOrFail('id', data.id)
 

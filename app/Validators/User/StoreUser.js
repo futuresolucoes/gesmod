@@ -7,7 +7,8 @@ class StoreUser {
 
   get rules () {
     return {
-      name: 'required|string',
+      company_id: 'required_without_any:person_id',
+      person_id: 'required_without_any:company_id',
       login: 'required|email|unique:users,login',
       password: 'required|confirmed|min:8'
     }
@@ -15,6 +16,8 @@ class StoreUser {
 
   get messages () {
     return {
+      'company_id.required_without_any': 'Must be passed company_id when not passed person_id',
+      'person_id.required_without_any': 'Must be passed person_id when not passed company_id',
       'password.min': 'min validation failed on password, expected 8 characters'
     }
   }

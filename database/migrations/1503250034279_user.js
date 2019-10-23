@@ -8,7 +8,7 @@ class UserSchema extends Schema {
       table.increments()
       table.string('login', 254).notNullable().unique()
       table.string('password', 60).notNullable()
-      table.boolean('is_active').defaultTo(0)
+      table.boolean('is_active').defaultTo(1)
       table.string('token')
       table.datetime('token_created_at')
       table.timestamps()

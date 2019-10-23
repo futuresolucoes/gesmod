@@ -33,7 +33,7 @@ class ExceptionHandler extends BaseExceptionHandler {
       return response.status(error.status).send(errorJSON)
     }
 
-    return response.status(error.status)
+    return response.status('500').send('Contact support')
   }
 
   /**
