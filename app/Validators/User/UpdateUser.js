@@ -8,7 +8,6 @@ class UserUpdateUser {
   get rules () {
     return {
       id: 'required|integer',
-      name: 'string',
       login: 'email|unique:users,login',
       password: 'confirmed|min:8'
     }

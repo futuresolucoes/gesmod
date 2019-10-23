@@ -7,10 +7,11 @@ class StoreUser {
 
   get rules () {
     return {
-      company_id: 'required_without_any:person_id',
-      person_id: 'required_without_any:company_id',
-      login: 'required|email|unique:users,login',
-      password: 'required|confirmed|min:8'
+      company_id: 'number|max:10',
+      person_id: 'number|max:10',
+      name: 'required_without_all:company_id,person_id|string|max:60',
+      login: 'required|email|max:60|unique:users,login',
+      password: 'required|confirmed|min:8|max:32'
     }
   }
 
@@ -18,6 +19,7 @@ class StoreUser {
     return {
       'company_id.required_without_any': 'Must be passed company_id when not passed person_id',
       'person_id.required_without_any': 'Must be passed person_id when not passed company_id',
+      'name.required_without_all': 'Must be passed when not passed company_id or person_id',
       'password.min': 'min validation failed on password, expected 8 characters'
     }
   }
