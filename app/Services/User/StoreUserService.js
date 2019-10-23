@@ -36,7 +36,7 @@ class StoreUserService {
     if (companyId) {
       const company = await Company.findOrFail(companyId)
 
-      await company.user().associatee(newUser, trx)
+      await company.user().associate(newUser, trx)
 
       await trx.commit()
 
