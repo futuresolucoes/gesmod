@@ -6,8 +6,8 @@ Route.post('users', 'UserController.store').validator('User/StoreUser')
 
 Route.post('sessions', 'SessionController.store')
 
-Route.post('forgotpassword', 'ForgotPasswordController.store')
-Route.put('resetpassword', 'ForgotPasswordController.update')
+Route.post('forgotpassword', 'ForgotPasswordController.store').validator('ForgotPassword/Store')
+Route.put('resetpassword', 'ForgotPasswordController.update').validator('ForgotPassword/Update')
 
 Route.post('sendmailtoconfirm', 'ConfirmEmailController.store').validator('ConfirmEmail/Store')
 Route.put('confirmmail', 'ConfirmEmailController.update').validator('ConfirmEmail/Update')

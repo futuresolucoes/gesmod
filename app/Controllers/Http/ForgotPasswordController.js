@@ -11,7 +11,7 @@ const Env = use('Env')
 class ForgotPasswordController {
   async store ({ request, response }) {
     try {
-      const login = request.input('login')
+      const { login, name } = request.only(['login', 'name'])
 
       const user = await User.findByOrFail('login', login)
 
@@ -24,7 +24,12 @@ class ForgotPasswordController {
 
       await Mail.send(
         ['mails.forgot_password', 'mails.forgot_password-text'],
-        { name: user.name, token: user.token, link: url, link_with_token: `${url}forgotpassword?token=${user.token}` },
+        {
+          name: name || login,
+          token: user.token,
+          link: url,
+          link_with_token: `${url}forgotpassword?token=${user.token}`
+        },
         message => {
           message
             .to(user.login)
@@ -39,7 +44,7 @@ class ForgotPasswordController {
 
   async update ({ request, response }) {
     try {
-      const { token, password } = request.all()
+      const { token, password } = request.only(['token', 'password'])
 
       const user = await User.findByOrFail('token', token)
 
