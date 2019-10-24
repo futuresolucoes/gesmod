@@ -1,17 +1,25 @@
 'use strict'
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 
+const crypto = require('crypto')
+const Event = use('Event')
 const User = use('App/Models/User')
-
-const StoreUserService = require('../../Services/User/StoreUserService')
 
 class UserController {
   async store ({ request, response }) {
     try {
-      const data = request.only(['company_id', 'person_id', 'name', 'login', 'password'])
+      const data = request.only(['name', 'login', 'password'])
 
-      return StoreUserService.run(data)
+      data.token = crypto.randomBytes(10).toString('hex')
+      data.token_created_at = new Date()
+
+      const newUser = await User.create(data)
+
+      await Event.fire('user:confirmMail', newUser)
+
+      return newUser
     } catch (error) {
       return response.status(error.status).send({ error: { message: error } })
     }
@@ -19,7 +27,7 @@ class UserController {
 
   async update ({ request, response, auth }) {
     try {
-      const data = request.only(['id', 'login', 'password', 'is_active'])
+      const data = request.only(['id', 'name', 'login', 'password', 'is_active'])
 
       const user = await User.findByOrFail('id', data.id)
 
@@ -35,7 +43,7 @@ class UserController {
 
       return user
     } catch (error) {
-      return response.status(400).send({ error: { message: 'Confirm your data' } })
+      return response.status(error.status).send({ error: { message: error.message } })
     }
   }
 }

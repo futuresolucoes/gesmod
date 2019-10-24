@@ -8,6 +8,7 @@ class UserUpdateUser {
   get rules () {
     return {
       id: 'required|integer',
+      name: 'string|min:3|max:60',
       login: 'email|unique:users,login',
       password: 'confirmed|min:8'
     }
@@ -15,7 +16,10 @@ class UserUpdateUser {
 
   get messages () {
     return {
-      'password.min': 'min validation failed on password, expected 8 characters'
+      'name.min': 'min validation failed on name, expected min 3 characters',
+      'name.max': 'min validation failed on name, expected max 60 characters',
+      'password.min': 'min validation failed on password, expected min 8 characters',
+      'password.max': 'min validation failed on password, expected max 32 characters'
     }
   }
 
