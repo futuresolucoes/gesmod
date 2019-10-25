@@ -7,17 +7,6 @@ const Env = use('Env')
 const Mail = use('Mail')
 
 User.confirmMail = async ({ name, login, token }) => {
-  console.log(`
-
-    HERE
-
-
-    ${name}
-    ${login}
-    ${token}
-
-
-  `)
   await Mail.send(
     ['mails.confirm_new_user', 'mails.confirm_new_user-text'],
     { name, login, token, link: `${Env.get('URL_FRONT')}confirm?token=${token}` },

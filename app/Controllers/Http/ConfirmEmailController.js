@@ -3,13 +3,15 @@
 const crypto = require('crypto')
 const { subDays, isAfter } = require('date-fns')
 
-const Event = use('Event')
+const Kue = use('Kue')
+const Job = use('App/Jobs/SendEmailToConfirmEmail')
+
 const User = use('App/Models/User')
 
 class ConfirmEmailController {
   async store ({ request, response }) {
     try {
-      const { name, login } = request.all()
+      const { login } = request.all()
 
       const user = await User.findByOrFail('login', login)
 
@@ -22,9 +24,13 @@ class ConfirmEmailController {
 
       await user.save()
 
-      user.name = name
+      const infoToEmail = {
+        name: user.name,
+        login: user.login,
+        token: user.token
+      }
 
-      await Event.fire('user:confirmMail', user)
+      Kue.dispatch(Job.key, infoToEmail, { attemps: 3 })
 
       return response.status(200).send({ Success: { message: 'E-mail sent' } })
     } catch (error) {
@@ -53,6 +59,8 @@ class ConfirmEmailController {
       user.is_active = 1
 
       user.save()
+
+      return { message: 'Actived' }
     } catch (error) {
       return response.status(error.status).send({ error: { message: 'Token invalid' } })
     }

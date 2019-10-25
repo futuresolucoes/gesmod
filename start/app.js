@@ -70,7 +70,7 @@ const commands = []
 |
 */
 const jobs = [
-  'App/Jobs/Testing'
+  'App/Jobs/SendEmailToConfirmEmail'
 ]
 
 module.exports = { providers, aceProviders, aliases, commands, jobs }

@@ -4,7 +4,10 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 
 const crypto = require('crypto')
-const Event = use('Event')
+
+const Kue = use('Kue')
+const Job = use('App/Jobs/SendEmailToConfirmEmail')
+
 const User = use('App/Models/User')
 
 class UserController {
@@ -15,11 +18,11 @@ class UserController {
       data.token = crypto.randomBytes(10).toString('hex')
       data.token_created_at = new Date()
 
-      const newUser = await User.create(data)
+      const { id, name, login } = await User.create(data)
 
-      await Event.fire('user:confirmMail', newUser)
+      Kue.dispatch(Job.key, data, { attemps: 3 })
 
-      return newUser
+      return { id, name, login }
     } catch (error) {
       return response.status(error.status).send({ error: { message: error } })
     }
