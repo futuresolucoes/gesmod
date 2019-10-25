@@ -4,14 +4,16 @@
 const subDays = require('date-fns/subDays')
 const isAfter = require('date-fns/isAfter')
 const crypto = require('crypto')
+
+const Kue = use('Kue')
+const Job = use('App/Jobs/SendEmailToForgotPassword')
+
 const User = use('App/Models/User')
-const Mail = use('Mail')
-const Env = use('Env')
 
 class ForgotPasswordController {
   async store ({ request, response }) {
     try {
-      const { login, name } = request.only(['login', 'name'])
+      const login = request.input('login')
 
       const user = await User.findByOrFail('login', login)
 
@@ -20,23 +22,15 @@ class ForgotPasswordController {
 
       await user.save()
 
-      const url = Env.get('URL_FRONT')
+      const infoToEmail = {
+        name: user.name,
+        login: user.login,
+        token: user.token
+      }
 
-      await Mail.send(
-        ['mails.forgot_password', 'mails.forgot_password-text'],
-        {
-          name: name || login,
-          token: user.token,
-          link: url,
-          link_with_token: `${url}forgotpassword?token=${user.token}`
-        },
-        message => {
-          message
-            .to(user.login)
-            .from('noreply@futuresolucoes.com.br', 'Equipe Future Soluções')
-            .subject('Recovery password')
-        }
-      )
+      Kue.dispatch(Job.key, infoToEmail, { attemps: 3 })
+
+      return { Success: 'Sent' }
     } catch (error) {
       return response.status(error.status).send({ error: { message: 'Confirm your e-mail.' } })
     }
