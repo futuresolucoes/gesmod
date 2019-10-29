@@ -18,6 +18,11 @@ class User extends Model {
     return ['password', 'token', 'token_created_at']
   }
 
+  isAdmin () {
+    if (this.is_admin) return true
+    return false
+  }
+
   tokens () {
     return this.hasMany('App/Models/Token')
   }

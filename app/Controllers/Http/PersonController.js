@@ -69,10 +69,41 @@ class PersonController {
     }
   }
 
-  async update ({ params, request, response }) {
+  async update ({ params, request, response, auth }) {
+    try {
+      const { id } = params
+
+      const dataToUpdatePerson = request.only([
+        'name',
+        'cpf',
+        'email',
+        'birthday',
+        'phone',
+        'phone_secondary',
+        'gender',
+        'person_type_id'
+      ])
+
+      const person = await Person.findOrFail(id)
+
+      const userAuth = await auth.getUser()
+
+      if (person.user_id !== userAuth.id && !userAuth.isAdmin()) {
+        return response.status(401).send({ Error: { message: "You doesn't have permission about this person" } })
+      }
+
+      person.merge(dataToUpdatePerson)
+
+      person.save()
+
+      return person
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 
   async destroy ({ params, request, response }) {
+
   }
 }
 

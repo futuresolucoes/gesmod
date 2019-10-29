@@ -17,5 +17,6 @@ Route.put('users', 'UserController.update').middleware(['auth']).validator('User
 Route.get('person', 'PersonController.index')
 Route.get('person/:id/', 'PersonController.show')
 Route.post('person', 'PersonController.store')
+Route.put('person/:id', 'PersonController.update')
 
 Route.get('companypersonresponsable', 'CompanyPersonResponsableController.index')
