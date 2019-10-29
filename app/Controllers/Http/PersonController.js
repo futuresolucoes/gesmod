@@ -2,24 +2,71 @@
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
 const Person = use('App/Models/Person')
 
 class PersonController {
   async index ({ request, response }) {
+    try {
+      const { search, person_type_id: personTypeId } = request.all()
 
+      const query = Person.query()
+
+      if (personTypeId) {
+        query.where('person_type_id', personTypeId)
+      }
+
+      if (search) {
+        query.where(function () {
+          this
+            .where('name', 'LIKE', `%${search}%`)
+            .orWhere('cpf', 'LIKE', `%${search}`)
+            .orWhere('email', 'LIKE', `%${search}%`)
+            .orWhere('phone', 'LIKE', `%${search}%`)
+            .orWhere('phone_secondary', 'LIKE', `%${search}%`)
+        })
+      }
+
+      const people = await query.fetch()
+
+      return people
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 
   async store ({ request, response }) {
-    const all = request.all()
+    try {
+      const dataToNewPerson = request
+        .only([
+          'name',
+          'cpf',
+          'email',
+          'birthday',
+          'phone',
+          'phone_secondary',
+          'gender',
+          'user_id',
+          'person_type_id'
+        ])
 
-    return all
+      const newPerson = await Person.create(dataToNewPerson)
+
+      return newPerson
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 
   async show ({ params, request, response }) {
-    const person = await Person.query().with('isResponsable').first()
+    try {
+      const { id } = params
 
-    return person
+      const person = await Person.findOrFail(id)
+
+      return person
+    } catch (error) {
+      return response.status(error.status).send({ error: { message: "Person doesn't exist" } })
+    }
   }
 
   async update ({ params, request, response }) {

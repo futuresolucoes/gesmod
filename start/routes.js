@@ -14,7 +14,8 @@ Route.put('confirmmail', 'ConfirmEmailController.update').validator('ConfirmEmai
 
 Route.put('users', 'UserController.update').middleware(['auth']).validator('User/UpdateUser')
 
-Route.get('person', 'PersonController.show')
+Route.get('person', 'PersonController.index')
+Route.get('person/:id/', 'PersonController.show')
 Route.post('person', 'PersonController.store')
 
 Route.get('companypersonresponsable', 'CompanyPersonResponsableController.index')
