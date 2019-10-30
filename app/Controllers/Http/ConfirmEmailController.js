@@ -13,10 +13,14 @@ class ConfirmEmailController {
     try {
       const { email } = request.all()
 
-      const user = await User.findByOrFail('email', email)
+      const user = await User.findBy('email', email)
 
-      if (user.is_active) {
-        return response.status(400).send({ error: { message: 'User is already active' } })
+      if (!user) {
+        return response.status(400).send({ error: { message: "User don't exist" } })
+      }
+
+      if (user.emailIsConfirmed()) {
+        return response.status(400).send({ error: { message: 'Email already confirmed' } })
       }
 
       user.token = crypto.randomBytes(10).toString('hex')
@@ -25,7 +29,8 @@ class ConfirmEmailController {
       await user.save()
 
       const infoToEmail = {
-        name: user.name,
+        first_name: user.first_name,
+        last_name: user.last_name,
         email: user.email,
         token: user.token
       }
@@ -60,7 +65,7 @@ class ConfirmEmailController {
 
       user.save()
 
-      return response.status(200).send({ Success: { message: 'Actived' } })
+      return response.status(200).send({ Success: { message: 'E-mail confirmed' } })
     } catch (error) {
       throw new Error(error)
     }
