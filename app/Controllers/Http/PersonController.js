@@ -34,7 +34,7 @@ class PersonController {
     }
   }
 
-  async store ({ request, response }) {
+  async store ({ request, response, auth }) {
     try {
       const dataToNewPerson = request
         .only([
@@ -45,9 +45,12 @@ class PersonController {
           'phone',
           'phone_secondary',
           'gender',
-          'user_id',
           'person_type_id'
         ])
+
+      const authUser = await auth.getUser()
+
+      dataToNewPerson.user_id = authUser.isAdmin() ? null : authUser.id
 
       const newPerson = await Person.create(dataToNewPerson)
 
