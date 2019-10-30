@@ -89,7 +89,7 @@ class PersonController {
       const userAuth = await auth.getUser()
 
       if (person.user_id !== userAuth.id && !userAuth.isAdmin()) {
-        return response.status(401).send({ Error: { message: "You doesn't have permission about this person" } })
+        return response.status(401).send({ Error: { message: "You don't have permission about this person" } })
       }
 
       person.merge(dataToUpdatePerson)
@@ -102,8 +102,22 @@ class PersonController {
     }
   }
 
-  async destroy ({ params, request, response }) {
+  async destroy ({ params, request, response, auth }) {
+    try {
+      const userAuth = await auth.getUser()
 
+      if (!userAuth.isAdmin()) {
+        return response.status(401).send({ Error: { message: "You don't have permission to delete this person." } })
+      }
+
+      const person = await Person.findOrFail(params.id)
+
+      await person.delete()
+
+      return person
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 }
 

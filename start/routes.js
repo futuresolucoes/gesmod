@@ -18,5 +18,4 @@ Route.get('person', 'PersonController.index')
 Route.get('person/:id/', 'PersonController.show')
 Route.post('person', 'PersonController.store')
 Route.put('person/:id', 'PersonController.update')
-
-Route.get('companypersonresponsable', 'CompanyPersonResponsableController.index')
+Route.delete('person/:id', 'PersonController.destroy')
