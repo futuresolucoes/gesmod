@@ -7,8 +7,10 @@ class StateSchema extends Schema {
   up () {
     this.create('states', (table) => {
       table.increments()
-      table.string('name', 255).notNullable()
-      table.string('initials', 255).notNullable()
+      table.string('name', 255)
+        .notNullable()
+      table.string('initials', 255)
+        .notNullable()
       table.timestamps()
     })
   }

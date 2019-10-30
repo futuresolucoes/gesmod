@@ -7,7 +7,9 @@ class PersonTypeSchema extends Schema {
   up () {
     this.create('person_types', (table) => {
       table.increments()
-      table.string('description', 256).notNullable().unique()
+      table.string('description', 256)
+        .notNullable()
+        .unique()
       table.timestamps()
     })
   }

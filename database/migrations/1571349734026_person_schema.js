@@ -23,10 +23,11 @@ class PersonSchema extends Schema {
         .onDelete('SET NULL')
       table.integer('person_type_id')
         .unsigned()
+        .notNullable()
         .references('id')
         .inTable('person_types')
         .onUpdate('CASCADE')
-        .onDelete('SET NULL')
+        .onDelete('RESTRICT')
       table.timestamps()
     })
   }

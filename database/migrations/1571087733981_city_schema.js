@@ -8,7 +8,12 @@ class CitySchema extends Schema {
     this.create('cities', (table) => {
       table.increments()
       table.string('name', 255).notNullable()
-      table.integer('state_id').unsigned().references('id').inTable('states')
+      table.integer('state_id')
+        .unsigned()
+        .references('id')
+        .inTable('states')
+        .onUpdate('CASCADE')
+        .onDelete('RESTRICT')
       table.timestamps()
     })
   }
