@@ -23,6 +23,15 @@ class User extends Model {
     return false
   }
 
+  emailIsConfirmed () {
+    if (this.email_is_confirmed) return true
+    return false
+  }
+
+  getFullName () {
+    return `${this.firstname} ${this.lastname}`
+  }
+
   tokens () {
     return this.hasMany('App/Models/Token')
   }
@@ -31,8 +40,9 @@ class User extends Model {
     return this.hasOne('App/Models/Company')
   }
 
-  person () {
-    return this.hasOne('App/Models/Person')
+  isResponsable () {
+    return this.belongsToMany('App/Models/Company')
+      .pivotTable('company_user_responsables')
   }
 }
 

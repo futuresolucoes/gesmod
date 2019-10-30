@@ -12,51 +12,49 @@
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Database = use('Database')
+const Hash = use('Hash')
 
-class CompanyPersonResponsableSeeder {
+class CompanyUserResponsableSeeder {
   async run () {
     const now = new Date()
 
-    const people = [
+    const users = [
       {
-        id: 1,
-        name: 'Jerferson Paulo',
+        first_name: 'Pedro',
+        last_name: 'Paulo',
+        email: 'pedro_paulo@gmail.com.br',
         cpf: '02271598220',
-        email: 'jeferson@futuresolucoes.com.br',
         birthday: '1985-04-10',
         phone: '54992683665',
         phone_secondary: '54304555544',
         gender: 'M',
-        user_id: null,
-        person_type_id: 1,
+        password: await Hash.make('12345678'),
         created_at: now,
         updated_at: now
       },
       {
-        id: 2,
-        name: 'Pedro Solvar',
-        cpf: '01577811193',
-        email: 'pedro.s@gmail.com',
-        birthday: '1987-05-10',
-        phone: '54981552211',
-        phone_secondary: '5433556655',
+        first_name: 'Jerferson',
+        last_name: 'Querb',
+        email: 'jeferson_querb@gmail.com.br',
+        cpf: '02271598333',
+        birthday: '1989-08-01',
+        phone: '54992683665',
+        phone_secondary: '54304555544',
         gender: 'M',
-        user_id: null,
-        person_type_id: 2,
+        password: await Hash.make('12345678'),
         created_at: now,
         updated_at: now
       },
       {
-        id: 3,
-        name: 'Bianca Severo',
-        cpf: '02233565982',
-        email: 'babalu@future.com',
-        birthday: '1995-05-10',
-        phone: '54988884444',
-        phone_secondary: '5433556688',
-        gender: 'F',
-        user_id: null,
-        person_type_id: 1,
+        first_name: 'Beatriz',
+        last_name: 'Querb',
+        email: 'beatriz_querb@gmail.com.br',
+        cpf: '02271585987',
+        birthday: '1999-01-05',
+        phone: '54991554477',
+        phone_secondary: '54304551524',
+        gender: 'M',
+        password: await Hash.make('12345678'),
         created_at: now,
         updated_at: now
       }
@@ -117,39 +115,39 @@ class CompanyPersonResponsableSeeder {
       {
         id: 1,
         company_id: 1,
-        person_id: 2,
+        user_id: 2,
         created_at: now,
         updated_at: now
       },
       {
         id: 2,
         company_id: 1,
-        person_id: 1,
+        user_id: 1,
         created_at: now,
         updated_at: now
       },
       {
         id: 3,
         company_id: 2,
-        person_id: 3,
+        user_id: 3,
         created_at: now,
         updated_at: now
       },
       {
         id: 4,
         company_id: 3,
-        person_id: 1,
+        user_id: 1,
         created_at: now,
         updated_at: now
       }
     ]
 
-    await Database.table('people').insert(people)
+    await Database.table('users').insert(users)
 
     await Database.table('companies').insert(companies)
 
-    await Database.table('company_person_responsables').insert(responsables)
+    await Database.table('company_user_responsables').insert(responsables)
   }
 }
 
-module.exports = CompanyPersonResponsableSeeder
+module.exports = CompanyUserResponsableSeeder

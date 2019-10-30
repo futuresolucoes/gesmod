@@ -3,9 +3,9 @@
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
 
-class CompanyPersonResponsableSchema extends Schema {
+class CompanyUserResponsableSchema extends Schema {
   up () {
-    this.create('company_person_responsables', (table) => {
+    this.create('company_user_responsables', (table) => {
       table.increments()
       table.integer('company_id')
         .notNullable()
@@ -14,21 +14,21 @@ class CompanyPersonResponsableSchema extends Schema {
         .inTable('companies')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
-      table.integer('person_id')
+      table.integer('user_id')
         .notNullable()
         .unsigned()
         .references('id')
-        .inTable('people')
+        .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
-      table.unique(['company_id', 'person_id'])
+      table.unique(['company_id', 'user_id'])
       table.timestamps()
     })
   }
 
   down () {
-    this.drop('company_person_responsables')
+    this.drop('company_user_responsables')
   }
 }
 
-module.exports = CompanyPersonResponsableSchema
+module.exports = CompanyUserResponsableSchema

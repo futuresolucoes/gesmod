@@ -8,17 +8,13 @@ class Company extends Model {
     return this.belongsTo('App/Models/CompanyType')
   }
 
-  addresses () {
-    return this.hasMany('App/Models/Address')
-  }
-
   user () {
     return this.belongsTo('App/Models/User')
   }
 
   responsibleFor () {
-    return this.belongsToMany('App/Models/Person')
-      .pivotTable('company_person_responsables')
+    return this.belongsToMany('App/Models/User')
+      .pivotTable('company_user_responsables')
   }
 }
 

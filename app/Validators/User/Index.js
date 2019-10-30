@@ -1,20 +1,18 @@
 'use strict'
 
-class PersonIndex {
+class UserIndex {
   get validateAll () {
     return true
   }
 
   get rules () {
     return {
-      person_type_id: 'integer|max:2',
       search: 'string|max:60'
     }
   }
 
   get messages () {
     return {
-      'person_type_id.max': 'min validation failed on person_type_id, expected max 2 number',
       'search.max': 'min validation failed on search, expected max 60 characters'
     }
   }
@@ -26,4 +24,4 @@ class PersonIndex {
   }
 }
 
-module.exports = PersonIndex
+module.exports = UserIndex
