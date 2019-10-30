@@ -11,9 +11,9 @@ const User = use('App/Models/User')
 class ConfirmEmailController {
   async store ({ request, response }) {
     try {
-      const { login } = request.all()
+      const { email } = request.all()
 
-      const user = await User.findByOrFail('login', login)
+      const user = await User.findByOrFail('email', email)
 
       if (user.is_active) {
         return response.status(400).send({ error: { message: 'User is already active' } })
@@ -26,7 +26,7 @@ class ConfirmEmailController {
 
       const infoToEmail = {
         name: user.name,
-        login: user.login,
+        email: user.email,
         token: user.token
       }
 
@@ -34,7 +34,7 @@ class ConfirmEmailController {
 
       return response.status(200).send({ Success: { message: 'E-mail sent' } })
     } catch (error) {
-      return response.status(400).send({ error: { message: 'Login not found' } })
+      throw new Error(error)
     }
   }
 
@@ -44,8 +44,8 @@ class ConfirmEmailController {
 
       const user = await User.findByOrFail('token', token)
 
-      if (user.is_active) {
-        return response.status(400).send({ error: { message: 'User is already active' } })
+      if (user.email_is_confirmed) {
+        return response.status(400).send({ error: { message: 'Email is already confirmed' } })
       }
 
       const tokenExpired = isAfter(subDays(new Date(), 1), user.token_created_at)
@@ -56,13 +56,13 @@ class ConfirmEmailController {
 
       user.token = null
       user.token_created_at = null
-      user.is_active = 1
+      user.email_is_confirmed = 1
 
       user.save()
 
-      return { message: 'Actived' }
+      return response.status(200).send({ Success: { message: 'Actived' } })
     } catch (error) {
-      return response.status(error.status).send({ error: { message: 'Token invalid' } })
+      throw new Error(error)
     }
   }
 }

@@ -80,10 +80,10 @@ class UserController {
 
       const user = await User.findByOrFail('id', params.id)
 
-      const { id: authUserId } = await auth.getUser()
+      const authUser = await auth.getUser()
 
-      if (user.id !== authUserId) {
-        return response.status(401).send({ error: { message: 'You do not have permission to change this user' } })
+      if (user.id !== authUser.id && !authUser.isAdmin()) {
+        return response.status(401).send({ error: { message: 'Without permission' } })
       }
 
       user.merge(data)
@@ -92,7 +92,7 @@ class UserController {
 
       return user
     } catch (error) {
-      return response.status(error.status).send({ error: { message: error.message } })
+      throw new Error(error)
     }
   }
 }
