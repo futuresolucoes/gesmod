@@ -9,8 +9,8 @@ class UserUpdateUser {
     return {
       first_name: 'string|min:3|max:60',
       last_name: 'string|min:3|max:60',
-      cpf: 'string|min:11|max:11|unique:users,cpf',
-      email: 'email|max:60|unique:users,email',
+      cpf: 'string|min:11|max:11',
+      email: 'email|max:60',
       birthday: 'date',
       phone: 'string|min:12|max:13',
       phone_secondary: 'string|min:12|max:13',

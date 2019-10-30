@@ -37,7 +37,7 @@ class UserController {
     }
   }
 
-  async store ({ request, response }) {
+  async store ({ request }) {
     try {
       const data = request.only([
         'first_name',
@@ -60,7 +60,23 @@ class UserController {
 
       return newUser
     } catch (error) {
-      return response.status(error.status).send({ error: { message: error } })
+      throw new Error(error)
+    }
+  }
+
+  async show ({ params, response }) {
+    try {
+      const { id } = params
+
+      const person = await User.find(id)
+
+      if (!person) {
+        return response.status(400).send({ error: { message: "User don't exist" } })
+      }
+
+      return person
+    } catch (error) {
+      throw new Error(error)
     }
   }
 

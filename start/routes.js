@@ -12,7 +12,8 @@ Route.put('confirmmail', 'ConfirmEmailController.update').validator('ConfirmEmai
 
 Route.get('users', 'UserController.index').validator('User/IndexUser')
 Route.post('users', 'UserController.store').validator('User/StoreUser')
-Route.put('users/:id', 'UserController.update').validator('User/UpdateUser')
+Route.get('user/:id', 'UserController.show')
+Route.put('user/:id', 'UserController.update').validator('User/UpdateUser')
 
 Route.get('person', 'PersonController.index')
 Route.get('person/:id/', 'PersonController.show')
