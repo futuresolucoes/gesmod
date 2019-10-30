@@ -111,6 +111,28 @@ class UserController {
       throw new Error(error)
     }
   }
+
+  async destroy ({ params, auth, response }) {
+    try {
+      const userAuth = await auth.getUser()
+
+      if (!userAuth.isAdmin()) {
+        return response.status(401).send({ Error: { message: 'Without Permission' } })
+      }
+
+      const person = await User.find(params.id)
+
+      if (!person) {
+        return response.status(400).send({ error: { message: "User don't exist" } })
+      }
+
+      await person.delete()
+
+      return person
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 }
 
 module.exports = UserController
