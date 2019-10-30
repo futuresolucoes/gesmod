@@ -16,15 +16,17 @@ class SendEmailToConfirmEmail {
   }
 
   // This is where the work is done.
-  async handle ({ name, login, token }) {
+  async handle ({ first_name: firstName, last_name: lastName, email, token }) {
     console.log(`${SendEmailToConfirmEmail.key}`)
+
+    const name = `${firstName} ${lastName}`
 
     await Mail.send(
       ['mails.confirm_new_user', 'mails.confirm_new_user-text'],
-      { name, login, token, link: `${Env.get('URL_FRONT')}confirm?token=${token}` },
+      { name, email, token, link: `${Env.get('URL_FRONT')}confirm?token=${token}` },
       message => {
         message
-          .to(login)
+          .to(email)
           .from('noreply@futuresolucoes.com.br', 'Equipe Future Soluções')
           .subject('Confirm your registration')
       }

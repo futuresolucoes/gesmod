@@ -10,7 +10,7 @@ Route.put('resetpassword', 'ForgotPasswordController.update').validator('ForgotP
 Route.post('sendmailtoconfirm', 'ConfirmEmailController.store').validator('ConfirmEmail/Store')
 Route.put('confirmmail', 'ConfirmEmailController.update').validator('ConfirmEmail/Update')
 
-Route.get('users', 'UserController.index')
+Route.get('users', 'UserController.index').validator('User/IndexUser')
 Route.post('users', 'UserController.store').validator('User/StoreUser')
 Route.put('users', 'UserController.update').middleware(['auth']).validator('User/UpdateUser')
 

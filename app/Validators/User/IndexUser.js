@@ -1,6 +1,6 @@
 'use strict'
 
-class UserIndex {
+class IndexUser {
   get validateAll () {
     return true
   }
@@ -13,7 +13,7 @@ class UserIndex {
 
   get messages () {
     return {
-      'search.max': 'min validation failed on search, expected max 60 characters'
+      'search.max': 'max validation failed on search, expected max 60 characters'
     }
   }
 
@@ -24,4 +24,4 @@ class UserIndex {
   }
 }
 
-module.exports = UserIndex
+module.exports = IndexUser
