@@ -29,7 +29,7 @@ class UserController {
         })
       }
 
-      const users = await query.fetch()
+      const users = await query.paginate()
 
       return users
     } catch (error) {
@@ -120,11 +120,7 @@ class UserController {
         return response.status(401).send({ Error: { message: 'Without Permission' } })
       }
 
-      const person = await User.find(params.id)
-
-      if (!person) {
-        return response.status(400).send({ error: { message: "User don't exist" } })
-      }
+      const person = await User.findOrFail(params.id)
 
       await person.delete()
 

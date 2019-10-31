@@ -1,6 +1,6 @@
 'use strict'
 
-class IndexUser {
+class UserIndex {
   get validateAll () {
     return true
   }
@@ -24,4 +24,4 @@ class IndexUser {
   }
 }
 
-module.exports = IndexUser
+module.exports = UserIndex

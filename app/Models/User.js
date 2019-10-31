@@ -28,6 +28,13 @@ class User extends Model {
     return false
   }
 
+  static get traits () {
+    return [
+      '@provider:Adonis/Acl/HasRole',
+      '@provider:Adonis/Acl/HasPermission'
+    ]
+  }
+
   getFullName () {
     return `${this.firstname} ${this.lastname}`
   }
