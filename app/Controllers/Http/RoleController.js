@@ -1,5 +1,5 @@
 'use strict'
-
+const Database = use('Database')
 const Role = use('Role')
 
 class RoleController {
@@ -7,7 +7,7 @@ class RoleController {
     try {
       const { search } = request.all()
 
-      const query = Role.query()
+      const query = Role.query().with('permissions')
 
       if (search) {
         query
@@ -25,13 +25,24 @@ class RoleController {
   }
 
   async store ({ request }) {
+    const trx = await Database.beginTransaction()
     try {
-      const dataToNewRole = request.only(['name', 'slug', 'description'])
+      const { permissions, ...dataToNewRole } = request
+        .only(['name', 'slug', 'description', 'permissions'])
 
-      const newRole = await Role.create(dataToNewRole)
+      const newRole = await Role.create(dataToNewRole, trx)
+
+      if (permissions) {
+        await newRole.permissions().attach(permissions, null, trx)
+      }
+
+      await trx.commit()
+
+      await newRole.load('permissions')
 
       return newRole
     } catch (error) {
+      await trx.rollback()
       throw new Error(error)
     }
   }
@@ -40,6 +51,8 @@ class RoleController {
     try {
       const role = await Role.findOrFail(params.id)
 
+      await role.load('permissions')
+
       return role
     } catch (error) {
       throw new Error(error)
@@ -47,17 +60,28 @@ class RoleController {
   }
 
   async update ({ params, request }) {
+    const trx = await Database.beginTransaction()
     try {
-      const dataToUpdateRole = request.only(['name', 'slug', 'description'])
+      const { permissions, ...dataToUpdateRole } = request
+        .only(['name', 'slug', 'description', 'permissions'])
 
       const role = await Role.findOrFail(params.id)
 
       role.merge(dataToUpdateRole)
 
-      role.save()
+      await role.save(trx)
+
+      if (permissions) {
+        await role.permissions().sync(permissions, trx)
+      }
+
+      await trx.commit()
+
+      await role.load('permissions')
 
       return role
     } catch (error) {
+      await trx.rollback()
       throw new Error(error)
     }
   }
