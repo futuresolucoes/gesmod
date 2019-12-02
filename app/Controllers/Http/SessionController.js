@@ -12,12 +12,12 @@ class SessionController {
         .first()
 
       if (user && !user.emailIsConfirmed()) {
-        return response.status(401).send({ error: { Message: 'Need this user confirm' } })
+        return response.status(401).send({ error: { Message: 'Need this user confirm email' } })
       }
 
       const token = await auth.attempt(email, password)
 
-      return token
+      return response.status(200).send({ token: token.token, user })
     } catch (error) {
       throw new Error(error)
     }
